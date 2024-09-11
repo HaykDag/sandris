@@ -4,11 +4,11 @@ canvas.width = 400;
 canvas.height = 600;
 
 const squareSize = 20;
-const sandSize = 4;
+const sandSize = 5;
 let grid = null 
 let currShape = null;
 
-const backgroundColors = ['#7f7f7f','#00ffff','#800080','#ff7f00','#80014d','#f23553','#005169','#569fb1'];
+const backgroundColors = ['#885159','#645188','	#886451','#528881','#80014d','#f23553','#005169','#b6a897'];
 const level = document.getElementById('level');
 const playBtn = document.getElementById('playBtn');
 const restartBtn = document.getElementById('restart');
@@ -78,6 +78,13 @@ function animate(time){
   if(diff>50 && !finish){
     ctx.clearRect(0,0,canvas.width,canvas.height);
 
+    if(colide){
+      if(currShape.row <= 2) finish = true;
+      currShape = makeShape(grid[0].length);
+      drawMatrix(currShape);
+      colide = false;
+    }
+
     if(score>0 && score>=progress){
       levelAudio.play();
       canvas.style.backgroundColor = backgroundColors[Math.min(progress/levelUpStep,backgroundColors.length-1)];
@@ -87,14 +94,6 @@ function animate(time){
       progress += levelUpStep;
     }
     
-
-    if(colide){
-      if(currShape.row <= 2) finish = true;
-      currShape = makeShape(grid[0].length);
-      drawMatrix(currShape);
-      colide = false;
-    }
-
     Sand.update(grid);
     isComplete(grid);
     draw(grid);
