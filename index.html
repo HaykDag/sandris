@@ -7,17 +7,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="btn-cnt">
-    <button onclick="start()" id="playBtn">Play</button>
-    <button onclick="restart()" id="restart">Restart</button>
-    <select id="level" >
-      <option value="easy" >Easy</option>
-      <option value="medium" >Medium</option>
-      <option value="hard" >Hard</option>
-    </select>
-    <span id="score">0</span>
+  <div class="container">
+    <div class="btn-cnt">
+      <button onclick="start()" id="playBtn">Play</button>
+      <button onclick="restart()" id="restart">Restart</button>
+      <select id="level" >
+        <option value="easy" >Easy</option>
+        <option value="medium" >Medium</option>
+        <option value="hard" >Hard</option>
+      </select>
+      <span id="score">0</span>
+    </div>
+  
+    <canvas id="myCanvas"></canvas>
   </div>
-  <canvas id="myCanvas"></canvas>
 
   <script src="sand.js"></script>
   <script src="shape.js"></script>

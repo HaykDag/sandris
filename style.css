@@ -1,23 +1,26 @@
 body {
   margin: 0;
-  align-items: center;
   background-color: black;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 15px;
 }
 
 #myCanvas {
-  position: absolute;
-  left: 50%;
-  top: 15px;
-  transform: translate(-50%, 10%);
   background-color: #885159;
-
 }
 
 .btn-cnt {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   display: flex;
   justify-content: center;

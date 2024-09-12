@@ -1,7 +1,9 @@
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
-canvas.width = 400;
-canvas.height = 600;
+
+const platform = detectDevice();
+canvas.width = platform === 'Mobile' ? window.innerWidth*0.9 : window.innerWidth*0.3;
+canvas.height = platform === 'Mobile' ? window.innerHeight*0.9 : window.innerHeight*0.85;
 
 const squareSize = 20;
 const sandSize = 5;
@@ -62,7 +64,61 @@ window.addEventListener('keyup',(e)=>{
     if(rotated) currShape.matrix = rotated;
     drawMatrix(currShape);
   } 
+});
+
+
+let touchCol = 0;
+let touchRow = 0;
+let touchStartTime = 0;
+
+canvas.addEventListener('touchstart',(e)=>{
+  e.preventDefault();
+  const {clientX,clientY} = e.touches[0];
+  touchCol = clientX;
+  touchRow = clientY;
+
+  const now = Date.now();
+  const timeSinceLastTouch = now - touchStartTime;
+
+  if (timeSinceLastTouch < 300) {
+    clearMatrix(currShape,grid);
+    const rotated = rotate(currShape,grid);
+    if(rotated) currShape.matrix = rotated;
+    drawMatrix(currShape);
+  }
+
+  touchStartTime = now;
+});
+
+canvas.addEventListener('touchend',(e)=>{
+  goLeft = false;
+  goRight = false;
+  goDown = false;
+});
+
+canvas.addEventListener('touchmove',(e)=>{
+  goDown = false;
+  goLeft = false;
+  goRight = false;
+
+  const {clientX,clientY} = e.touches[0];
   
+  const colDiff = clientX-touchCol;
+  const rowDiff = clientY-touchRow;
+
+  touchCol = clientX;
+  
+  if(colDiff<0){
+    goLeft = true;
+  }else if(colDiff>0){
+    goRight = true;
+  } 
+
+  if(rowDiff>20){
+    goDown = true;
+  }else{
+    goDown = false;
+  }
 });
 
 
@@ -185,8 +241,8 @@ function draw(grid){
 }
 
 function createGrid(width,height,cellSize){
-  const colCount = width/cellSize;
-  const rowCount = height/cellSize;
+  const colCount = Math.floor(width/cellSize);
+  const rowCount = Math.floor(height/cellSize);
 
   const grid = Array(rowCount).fill().map(()=>Array(colCount).fill(0));
 
@@ -268,3 +324,14 @@ function isComplete(grid){
 
 }
 
+function detectDevice() {
+  const userAgent = navigator.userAgent;
+
+  if (/Android|webOS|iPhone|iPad|iPod/i.test(userAgent)) {
+    return 'Mobile';
+  } else {
+    return 'Desktop';
+  }
+}
+
+console.log(detectDevice()); 
