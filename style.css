@@ -5,6 +5,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-image: url('./pics/world-1.jpg');
+  background-size: cover;
 }
 
 .container {
@@ -16,8 +18,14 @@ body {
   margin: 15px;
 }
 
-#myCanvas {
-  background-color: #885159;
+#nextCanvas {
+  position: absolute;
+  right: 5px;
+}
+
+#boardCanvas {
+  background-color: rgba(165, 159, 159, 0.316);
+  border-radius: 15px;
 }
 
 .btn-cnt {
@@ -28,6 +36,7 @@ body {
   gap: 10px;
   padding: 15px;
   user-select: none;
+  z-index: 100;
 }
 
 .btn-cnt>button,

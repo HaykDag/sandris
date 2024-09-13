@@ -1,5 +1,8 @@
-const canvas = document.getElementById('myCanvas');
+const canvas = document.getElementById('boardCanvas');
 const ctx = canvas.getContext('2d');
+
+const nextCanvas = document.getElementById('nextCanvas');
+const nextCtx = nextCanvas.getContext('2d');
 
 const platform = detectDevice();
 canvas.width = platform === 'Mobile' ? window.innerWidth*0.9 : window.innerWidth*0.3;
@@ -7,8 +10,12 @@ canvas.height = platform === 'Mobile' ? window.innerHeight*0.9 : window.innerHei
 
 const squareSize = 20;
 const sandSize = 5;
+nextCanvas.width = (squareSize*3)*0.7;
+nextCanvas.height = (squareSize*3)*0.7;
+
 let grid = null 
 let currShape = null;
+let nextShape = null;
 
 const backgroundColors = ['#885159','#645188','	#886451','#528881','#80014d','#f23553','#005169','#b6a897'];
 const level = document.getElementById('level');
@@ -27,12 +34,13 @@ lineConntected.src = './audio/line-connect.mp3';
 
 
 const levels = {
-  'easy': 1,
-  'medium': 2,
-  'hard': 3,
+  'easy': {speed:1,world:'world-1.jpg'},
+  'medium': {speed:2,world:'world-2.jpg'},
+  'hard': {speed:3,world:'world-3.jpg'},
 }
+const backgroundImages = ['world-1.jpg','world-2.jpg','world-3.jpg'];
 
-let fallSpeed = levels[level.value];
+let fallSpeed = levels[level.value].speed;
 let downStep = fallSpeed*3;
 let sideStep = fallSpeed+1;
 let colide = false;
@@ -42,9 +50,11 @@ let goDown = false;
 let finish = true;
 
 level.onchange = function (e){
-  fallSpeed = levels[e.target.value];
+  const {speed,world} = levels[e.target.value] 
+  fallSpeed = speed;
   downStep = fallSpeed*3;
   sideStep = fallSpeed+1;
+  document.body.style.backgroundImage = `url('./pics/${world}')`
   restart();
   this.blur();
 }
@@ -67,15 +77,14 @@ window.addEventListener('keyup',(e)=>{
 });
 
 
-let touchCol = 0;
-let touchRow = 0;
+let startYTouch = 0;
+let prevTouch = null;
 let touchStartTime = 0;
 
 canvas.addEventListener('touchstart',(e)=>{
   e.preventDefault();
-  const {clientX,clientY} = e.touches[0];
-  touchCol = clientX;
-  touchRow = clientY;
+
+  startYTouch = e.touches[0].clientY;
 
   const now = Date.now();
   const timeSinceLastTouch = now - touchStartTime;
@@ -94,27 +103,32 @@ canvas.addEventListener('touchend',(e)=>{
   goLeft = false;
   goRight = false;
   goDown = false;
+  prevTouch = null;
 });
+
 
 canvas.addEventListener('touchmove',(e)=>{
   goDown = false;
   goLeft = false;
   goRight = false;
 
-  const {clientX,clientY} = e.touches[0];
-  
-  const colDiff = clientX-touchCol;
-  const rowDiff = clientY-touchRow;
+  const {clientX,clientY} = e.changedTouches[0];
 
-  touchCol = clientX;
+  if(!prevTouch){
+    prevTouch = clientX;
+    return;
+  }
   
-  if(colDiff<0){
+  const xDiff = clientX-prevTouch;
+  const yDiff = clientY-startYTouch;
+  
+  if(xDiff<0){
     goLeft = true;
-  }else if(colDiff>0){
+  }else if(xDiff>0){
     goRight = true;
   } 
 
-  if(rowDiff>20){
+  if(yDiff>30){
     goDown = true;
   }else{
     goDown = false;
@@ -123,7 +137,7 @@ canvas.addEventListener('touchmove',(e)=>{
 
 
 let lastTime = 0;
-const levelUpStep = 1000;
+const levelUpStep = 500;
 let progress = levelUpStep;
 
 function animate(time){
@@ -136,16 +150,19 @@ function animate(time){
 
     if(colide){
       if(currShape.row <= 2) finish = true;
-      currShape = makeShape(grid[0].length);
+      currShape = nextShape;
+      nextShape = makeShape(grid[0].length);
+      drawNext(nextShape);
       drawMatrix(currShape);
       colide = false;
     }
 
     if(score>0 && score>=progress){
       levelAudio.play();
-      canvas.style.backgroundColor = backgroundColors[Math.min(progress/levelUpStep,backgroundColors.length-1)];
+      const world = backgroundImages[Math.min(progress/levelUpStep,backgroundImages.length-1)];
+      document.body.style.backgroundImage = `url('./pics/${world}')`;
       fallSpeed ++;
-      downStep = fallSpeed*3; 
+      downStep = fallSpeed*3;   
       sideStep = fallSpeed+1;
       progress += levelUpStep;
     }
@@ -166,6 +183,7 @@ animate();
 function restart(){
   grid = createGrid(canvas.width,canvas.height,sandSize);
   currShape = makeShape(grid[0].length);
+  nextShape = makeShape(grid[0].length);
   ctx.clearRect(0,0,canvas.width,canvas.height);
   finish = true;
   playBtn.innerText = 'Play';
@@ -176,7 +194,9 @@ function start(){
   if(finish){
     grid = grid || createGrid(canvas.width,canvas.height,sandSize);
     currShape = currShape || makeShape(grid[0].length);
+    nextShape = nextShape || makeShape(grid[0].length);
     drawMatrix(currShape);
+    drawNext(nextShape);
     finish = false;
     playBtn.innerText = 'Pause';
   }else{
@@ -209,6 +229,23 @@ function matrixMove(shape,grid){
     colide = true;
   }
   
+}
+
+function drawNext(shape){
+  const {matrix,color} = shape;
+  nextCtx.clearRect(0,0,nextCanvas.width,nextCanvas.height);
+  for(let i = 0;i<matrix.length;i++){
+    for(let j = 0;j<matrix[i].length;j++){
+      const square = matrix[i][j];
+      const size = squareSize*0.7;
+      if(square){
+        nextCtx.beginPath();
+        nextCtx.rect(j*size,i*size,size,size);
+        nextCtx.fillStyle = color;
+        nextCtx.fill();
+      }
+    }
+  }
 }
 
 function getGridCoord(shape,mRow,mCol){

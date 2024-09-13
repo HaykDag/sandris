@@ -1,5 +1,5 @@
 const shapes = ['O','I','S','Z','L','J','T'];
-const colors = ['#ff7858','#bee3ce','#639c72'];
+const colors = ['#f5dd51','#0c9a7c','#3d2b4f'];
 
 let matrix = null;
 let mStartPointX = 35;
