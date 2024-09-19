@@ -54,7 +54,7 @@ animate();
 
 
 let fallSpeed = levels[level.value].speed;
-let downStep = fallSpeed*3;
+let downStep = fallSpeed*10;
 let sideStep = fallSpeed+1;
 let colide = false;
 

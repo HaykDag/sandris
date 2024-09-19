@@ -11,7 +11,7 @@ class Playground{
     this.goRight = false;
     this.goDown = false;
     this.colide = false;
-    this.levelUp = 20;
+    this.levelUp = 500;
     this.progress = this.levelUp;
     this.#addListeners();
     
@@ -227,7 +227,6 @@ class Playground{
             },400);
           }
         }
-
         left = false;
         right = false;
       }  
@@ -288,7 +287,7 @@ class Playground{
 
         if (timeSinceLastTouch < 300) {
           this.clearMatrix();
-          const rotated = this.shape.rotate(grid);
+          const rotated = this.shape.rotate(this.grid);
           if(rotated) this.shape.matrix = rotated;
           this.drawMatrix();
         }
