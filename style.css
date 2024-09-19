@@ -18,13 +18,8 @@ body {
   margin: 15px;
 }
 
-#nextCanvas {
-  position: absolute;
-  right: 5px;
-}
-
 #boardCanvas {
-  background-color: rgba(165, 159, 159, 0.316);
+  background-color: rgba(59, 56, 56, 0.562);
   border-radius: 15px;
 }
 
