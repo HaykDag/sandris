@@ -11,7 +11,7 @@ class Playground{
     this.goRight = false;
     this.goDown = false;
     this.colide = false;
-    this.levelUp = 500;
+    this.levelUp = 200;
     this.progress = this.levelUp;
     this.#addListeners();
     
@@ -210,11 +210,9 @@ class Playground{
           scoreEl.innerText = score;
           if(score>=this.progress){
             levelAudio.play();
-            const world = backgroundImages[Math.min(this.progress/this.levelUp,backgroundImages.length-1)];
-            document.body.style.backgroundImage = `url('./pics/${world}')`;
-            fallSpeed ++;
-            downStep = fallSpeed*3;   
-            sideStep = fallSpeed+1;
+            fallSpeed++;
+            sideStep++;
+            levelChange(fallSpeed);
             this.progress += this.levelUp;
           }
           for(let [row,col] of group){
@@ -320,13 +318,17 @@ class Playground{
         const yDiff = clientY-startYTouch;
         
       
-        if(xDiff<-10){
+        this.goDown = yDiff>50;
+
+        if(this.goDown) return;
+
+        if(xDiff<-25){
           this.goLeft = true;
-        }else if(xDiff>10){
+        }else if(xDiff>25){
           this.goRight = true;
         } 
 
-        this.goDown = yDiff>30;
+        
 
       });
     }

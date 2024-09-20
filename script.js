@@ -15,7 +15,6 @@ const sandSize = 5;
 nextCanvas.width = (squareSize*3)*0.7;
 nextCanvas.height = (squareSize*3)*0.7;
 
-const backgroundColors = ['#885159','#645188','	#886451','#528881','#80014d','#f23553','#005169','#b6a897'];
 const level = document.getElementById('level');
 const playBtn = document.getElementById('playBtn');
 const restartBtn = document.getElementById('restart');
@@ -32,11 +31,14 @@ lineConntected.src = './audio/line-connect.mp3';
 
 
 const levels = {
-  'easy': {speed:1,world:'world-1.jpg'},
-  'medium': {speed:2,world:'world-2.jpg'},
-  'hard': {speed:3,world:'world-3.jpg'},
+  'beginner': {speed:1,world:'world-1.jpg'},
+  'easy': {speed:3,world:'world-2.jpg'},
+  'normal': {speed:5,world:'world-3.jpg'},
+  'hard': {speed:7,world:'world-4.jpg'},
+  'insane': {speed:9,world:'world-5.jpg'},
+  'crazy': {speed:11,world:'world-6.jpg'},
 }
-const backgroundImages = ['world-1.jpg','world-2.jpg','world-3.jpg'];
+
 const playground = new Playground(canvas,nextCanvas);
 
 let lastTime = 0;
@@ -54,17 +56,13 @@ animate();
 
 
 let fallSpeed = levels[level.value].speed;
-let downStep = fallSpeed*10;
-let sideStep = fallSpeed+1;
+const downStep = 30;
+let sideStep = 4+fallSpeed;
 let colide = false;
 
 
 level.onchange = function (e){
-  const {speed,world} = levels[e.target.value] 
-  fallSpeed = speed;
-  downStep = fallSpeed*3;
-  sideStep = fallSpeed+1;
-  document.body.style.backgroundImage = `url('./pics/${world}')`
+  levelChange(e.target.value);
   restart();
   this.blur();
 }
@@ -103,5 +101,16 @@ function detectDevice() {
     return 'Mobile';
   } else {
     return 'Desktop';
+  }
+}
+
+function levelChange(value){
+  for(key in levels){
+    const {speed,world} = levels[key];
+    if(speed===value || key===value){
+      fallSpeed = speed;
+      sideStep = fallSpeed+4;
+      document.body.style.backgroundImage = `url('./pics/${world}')`
+    }
   }
 }

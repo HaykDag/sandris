@@ -1,5 +1,5 @@
 const shapes = ['O','I','S','Z','L','J','T'];
-const colors = ['#f5dd51','#0c9a7c','#3d2b4f'];
+const colors = ['#f5dd51','#0c9a7c','#b53365'];
 const shapeMatrix = {
   'O':[ 
         [1,1],
