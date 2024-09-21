@@ -317,19 +317,18 @@ class Playground{
         const xDiff = clientX-prevTouch;
         const yDiff = clientY-startYTouch;
         
-      
-        this.goDown = yDiff>50;
-
-        if(this.goDown) return;
-
-        if(xDiff<-25){
+      if(yDiff>Math.abs(xDiff)){
+        downStep = Math.floor(Math.abs(yDiff*0.1));
+        this.goDown = true;
+      }else{
+        sideStep = Math.floor(Math.abs(xDiff*0.07));
+        if(xDiff<-1){
           this.goLeft = true;
-        }else if(xDiff>25){
+        }else if(xDiff>1){
           this.goRight = true;
         } 
-
-        
-
+      }
+      
       });
     }
   }
