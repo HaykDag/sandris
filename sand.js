@@ -13,15 +13,7 @@ class Sand{
     ctx.rect(this.x*this.size,this.y*this.size,this.size,this.size);
     ctx.fill();
   }
-
-  stroke(ctx,color='black'){
-    ctx.beginPath();
-    ctx.fillStyle = this.color;
-    ctx.rect(this.x*this.size,this.y*this.size,this.size,this.size);
-    ctx.strokeStyle = color;
-    ctx.stroke();
-  }
-
+  
   static update(grid){
     for(let row = grid.length-1;row>0;row--){
       for(let col = grid[row].length-1;col>=0;col--){

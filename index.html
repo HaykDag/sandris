@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sand Tetris</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="/pics/favicon.ico.png">
 </head>
 <body>
   <div class="container">
@@ -12,12 +13,13 @@
       <button onclick="start()" id="playBtn">Play</button>
       <button onclick="restart()" id="restart">Restart</button>
       <canvas id="nextCanvas"></canvas> 
-      <select id="level" >
+      <select id="level">
         <option value="beginner" >Beginner</option>
         <option value="easy" >Easy</option>
         <option value="normal" >Normal</option>
         <option value="hard" >Hard</option>
         <option value="insane" >Insane</option>
+        <option value="crazy" >Crazy</option>
       </select>
       <span id="score">0</span>
     </div>

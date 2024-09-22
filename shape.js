@@ -52,20 +52,20 @@ class Shape{
     const size = squareSize/sandSize;
     const n = matrix.length;
 
-      // Create a new matrix to store the rotated values
-      const rotated = Array.from({ length: n }, () => Array(n).fill(0));
+    // Create a new matrix to store the rotated values
+    const rotated = Array.from({ length: n }, () => Array(n).fill(0));
 
-      for (let i = 0; i < n; i++) {
-          for (let j = 0; j < n; j++) {
-              rotated[j][n - i - 1] = matrix[i][j];
-          }
-      }
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            rotated[j][n - i - 1] = matrix[i][j];
+        }
+    }
 
-      //check if the rotated matrix is in the grid's boundries;
-      const sides = this.getSides(rotated);
-      const {left,right} = sides;
-      if((this.col+left.col*size)<0) return null; 
-      if((this.col+size*(right.col+1))>grid[0].length) return null; 
+    //check if the rotated matrix is in the grid's boundries;
+    const sides = this.getSides(rotated);
+    const {left,right} = sides;
+    if((this.col+left.col*size)<0) return null; 
+    if((this.col+size*(right.col+1))>grid[0].length) return null; 
 
     this.sides = sides;
     return rotated;
@@ -79,7 +79,20 @@ class Shape{
   #randomShape(){
     const index= Math.floor(Math.random()*shapes.length);
     const matrix = shapeMatrix[shapes[index]];
-    return matrix;
+    const len = matrix.length;
+
+    //Create a new matrix to store the rotated values
+    const rotated = Array.from({ length: len }, () => Array(len).fill(0));
+    const steps = Math.floor(Math.random()*2)+1;
+    
+    for(let n = 1;n<=steps;n++){
+      for (let i = 0; i < len; i++) {
+        for (let j = 0; j < len; j++) {
+            rotated[j][len - i - 1] = matrix[i][j];
+        }
+      }  
+    }
+    return rotated;
   }
 
   getSides(matrix){

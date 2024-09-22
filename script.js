@@ -22,22 +22,20 @@ const scoreEl = document.getElementById('score');
 
 const sandAudio = document.createElement('audio');
 sandAudio.src = './audio/sand-audio.mp3';
-
 const levelAudio = document.createElement('audio');
 levelAudio.src = './audio/level-up.mp3';
-
 const lineConntected = document.createElement('audio');
 lineConntected.src = './audio/line-connect.mp3';
 
-
 const levels = {
   'beginner': {speed:1,world:'world-1.jpg'},
-  'easy': {speed:3,world:'world-2.jpg'},
-  'normal': {speed:5,world:'world-3.jpg'},
-  'hard': {speed:7,world:'world-4.jpg'},
-  'insane': {speed:9,world:'world-5.jpg'},
-  'crazy': {speed:11,world:'world-6.jpg'},
+  'easy': {speed:2,world:'world-2.jpg'},
+  'normal': {speed:4,world:'world-3.jpg'},
+  'hard': {speed:5,world:'world-4.jpg'},
+  'insane': {speed:6,world:'world-5.jpg'},
+  'crazy': {speed:8,world:'world-6.jpg'},
 }
+
 
 const playground = new Playground(canvas,nextCanvas);
 
@@ -108,6 +106,7 @@ function levelChange(value){
   for(key in levels){
     const {speed,world} = levels[key];
     if(speed===value || key===value){
+      level.value = key;
       fallSpeed = speed;
       sideStep = fallSpeed+4;
       document.body.style.backgroundImage = `url('./pics/${world}')`

@@ -249,7 +249,6 @@ class Playground{
     }
   }
 
-
   #addListeners(){
     if(platform === 'Desktop'){
       window.addEventListener('keydown',(e)=>{
