@@ -64,8 +64,8 @@ class Playground{
   }
 
   #fillSquare(row,col,color){
-    const {grid} = this;
-    const {row:gRow,col:gCol} = this.shape;
+    const {grid,shape} = this;
+    const {row:gRow,col:gCol} = shape;
     const size = squareSize/sandSize;
     
     const startRow = gRow+row*size;
@@ -248,7 +248,7 @@ class Playground{
       }
     }
   }
-
+  
   #addListeners(){
     if(platform === 'Desktop'){
       window.addEventListener('keydown',(e)=>{

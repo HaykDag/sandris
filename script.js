@@ -9,8 +9,8 @@ const platform = detectDevice();
 canvas.width = platform === 'Mobile' ? window.innerWidth*0.7 : window.innerWidth*0.3;
 canvas.height = platform === 'Mobile' ? window.innerHeight*0.7 : window.innerHeight*0.85;
 
-const squareSize = 20;
-const sandSize = 5;
+const squareSize = 16;
+const sandSize = 4;
 
 nextCanvas.width = (squareSize*3)*0.7;
 nextCanvas.height = (squareSize*3)*0.7;
@@ -36,7 +36,6 @@ const levels = {
   'crazy': {speed:8,world:'world-6.jpg'},
 }
 
-
 const playground = new Playground(canvas,nextCanvas);
 
 let lastTime = 0;
@@ -57,7 +56,6 @@ let fallSpeed = levels[level.value].speed;
 let downStep = 10;
 let sideStep = 4+fallSpeed;
 let colide = false;
-
 
 level.onchange = function (e){
   levelChange(e.target.value);
@@ -113,3 +111,4 @@ function levelChange(value){
     }
   }
 }
+

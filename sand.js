@@ -20,7 +20,8 @@ class Sand{
         const curr = grid[row][col];
         const above = grid[row-1][col];
 
-        const dir = Math.random()>0.5?-1:1;
+        let dir = Math.random()>0.5?-1:1;
+        
         const randomSide = grid[row][col+dir];
         const otherSide = grid[row][col-dir];
         
